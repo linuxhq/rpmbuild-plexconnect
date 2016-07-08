@@ -1,0 +1,14 @@
+# Set home directory of PlexConnect
+#
+PLEXCONNECT_HOME=/var/lib/plexconnect
+
+# Set user to run PlexConnect as
+#
+# If you're not running plexconnect on ports < 1024, you
+# can run this as the plexconnect user instead.
+#
+PLEXCONNECT_USER=plexconnect
+
+# Set path to python executable (needs to be >= 2.7)
+#
+PLEXCONNECT_PYTHON=/usr/bin/python2.7

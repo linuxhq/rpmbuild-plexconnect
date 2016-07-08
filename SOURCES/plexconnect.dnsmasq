@@ -1,0 +1,15 @@
+# You must uncomment the following from /etc/dnsmasq.conf
+# conf-dir=/etc/dnsmasq.d
+#
+# tkimball Tue May 13 13:36:28 PDT 2014
+# 
+# Uncomment the host you want to intercept and replace
+# x.x.x.x with the ip address of PlexConnect
+#
+# address=/trailers.apple.com/x.x.x.x
+# address=/secure.marketwatch.com/x.x.x.x
+
+# Use the following to block Apple TV updates
+address=/mesu.apple.com/127.0.0.1
+address=/appldnld.apple.com/127.0.0.1
+address=/appldnld.apple.com.edgesuite.net/127.0.0.1

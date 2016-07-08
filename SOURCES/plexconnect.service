@@ -1,0 +1,16 @@
+[Unit]
+Description=PlexConnect
+After=plexmediaserver.service
+
+[Service]
+EnvironmentFile=/etc/sysconfig/plexconnect
+ExecStart=/bin/sh -c "${PLEXCONNECT_PYTHON} ${PLEXCONNECT_HOME}/PlexConnect_daemon.py --pidfile /var/run/plexconnect/plexconnect.pid"
+Type=simple
+User=plexconnect
+Group=plexconnect
+PIDFile=/var/run/plexconnect/plexconnect.pid
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

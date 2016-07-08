@@ -1,0 +1,75 @@
+#! /bin/sh
+#
+# plexconnect: stops/starts/restarts and statuses PlexConnect
+# chkconfig:   235 20 80
+# Description: PlexConnect for Apple TV
+# config: /var/lib/plexconnect/Settings.cfg
+# config: /etc/sysconfig/plexconnect
+#
+### BEGIN INIT INFO
+# Provides: PlexConnect
+# Required-Start: $network Plex Media Server
+# Should-Start: PlexConnect
+# Required-Stop:
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 6
+# Short-Description: PlexConnect
+# Description: PlexConnect for Apple TV
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+if [ -f /etc/sysconfig/plexconnect ]; then
+	. /etc/sysconfig/plexconnect
+fi
+
+[ -z ${PLEXCONNECT_USER} ] && PLEXCONNECT_USER=root
+[ -z ${PLEXCONNECT_PYTHON} ] && PLEXCONNECT_PYTHON=/usr/bin/python
+
+prog=PlexConnect
+lockfile=${LOCKFILE-/var/lock/subsys/plexconnect}
+pidfile=${PIDFILE-/var/run/plexconnect/plexconnect.pid}
+RETVAL=0
+
+PLEXCONNECT_DAEMON=${PLEXCONNECT_HOME}/PlexConnect_daemon.py
+
+start() {
+        echo -n $"Starting $prog: "
+        daemon --user=${PLEXCONNECT_USER} ${PLEXCONNECT_PYTHON} ${PLEXCONNECT_DAEMON} --pidfile ${pidfile}
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && touch ${lockfile}
+        return $RETVAL
+}
+
+stop() {
+	echo -n $"Stopping $prog: "
+	killproc -p ${pidfile} ${PLEXCONNECT_PYTHON} 
+	RETVAL=$?
+	echo
+	[ $RETVAL = 0 ] && rm -f ${lockfile}
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  status)
+        status -p ${pidfile} ${PLEXCONNECT_PYTHON}
+	RETVAL=$?
+	;;
+  restart)
+	stop
+	start
+	;;
+  *)
+	echo $"Usage: $prog {start|stop|restart|status}"
+	RETVAL=2
+esac
+
+exit $RETVAL

@@ -1,0 +1,31 @@
+upstream plexconnect {
+    server localhost:8080;
+}
+
+server {
+    listen 80;
+    server_name trailers.apple.com secure.marketwatch.com;
+
+    location / {
+        proxy_set_header Host			$host;
+        proxy_set_header X-Real-IP		$remote_addr;
+        proxy_set_header X-Forwarded-For	$proxy_add_x_forwarded_for;
+        proxy_pass 				http://plexconnect;
+    }
+}
+
+server {
+    listen 443;
+    server_name trailers.apple.com secure.marketwatch.com;
+
+    ssl_certificate		/etc/pki/plexconnect/trailers.pem;
+    ssl_certificate_key		/etc/pki/plexconnect/trailers.key;
+    ssl on;
+
+    location / {
+        proxy_set_header Host			$host;
+        proxy_set_header X-Real-IP		$remote_addr;
+        proxy_set_header X-Forwarded-For	$proxy_add_x_forwarded_for;
+        proxy_pass				http://plexconnect;
+    }
+}

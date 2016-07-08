@@ -1,0 +1,12 @@
+/var/log/plexconnect/*.log {
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    prerotate
+        /sbin/service plexconnect stop > /dev/null 2>/dev/null || true
+    endscript
+    postrotate
+        /sbin/service plexconnect start > /dev/null 2>/dev/null || true
+    endscript
+}

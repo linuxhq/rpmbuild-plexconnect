@@ -1,0 +1,48 @@
+NameVirtualHost *:80
+NameVirtualHost *:443
+
+<VirtualHost *:80>
+    ServerName trailers.apple.com
+    ServerAlias secure.marketwatch.com
+    ProxyRequests Off
+    ProxyPreserveHost On
+    BrowserMatch "^(iTunes-)?AppleTV" appletv
+
+    ErrorLog logs/plexconnect-error_log
+    CustomLog logs/plexconnect-access_log combined
+
+    <Proxy *>
+        Order deny,allow
+        Deny from all
+        Allow from env=appletv
+    </Proxy>
+
+    ProxyPass / http://localhost:8080/ nocanon
+    ProxyPassReverse / http://localhost:8080/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName trailers.apple.com
+    ServerAlias secure.marketwatch.com
+    ProxyRequests Off
+    ProxyPreserveHost On
+    BrowserMatch "^(iTunes-)?AppleTV" appletv
+
+    SSLEngine on
+    SSLProxyEngine On
+    SSLProtocol all -SSLv2
+    SSLCertificateFile /etc/pki/plexconnect/trailers.cer
+    SSLCertificateKeyFile /etc/pki/plexconnect/trailers.key
+ 
+    ErrorLog logs/plexconnect-error_log
+    CustomLog logs/plexconnect-access_log combined
+
+    <Proxy *>
+        Order deny,allow
+        Deny from all
+        Allow from env=appletv
+    </Proxy>
+
+    ProxyPass / http://localhost:8080/ nocanon
+    ProxyPassReverse / http://localhost:8080/
+</VirtualHost>
