@@ -1,5 +1,5 @@
-%global date 20160428
-%global commit cfd51deffb2d1159f15edc29faee56166717526c
+%global date 20160708
+%global commit 3ad6bf5d653ebd3793bfeb7f1abe79a35c8dd9bb
 %global short_commit %(c=%{commit}; echo ${c:0:7})
 
 Name:		plexconnect
@@ -110,6 +110,9 @@ rm -rf %{buildroot}
 %attr(-,plexconnect,plexconnect) %dir %{_localstatedir}/run/%{name}
 
 %changelog
+* Fri Jul 08 2016 Taylor Kimball <taylor@linuxhq.org> - 20160708git3ad6bf5-1
+- Updated to commit 3ad6bf5.
+
 * Thu Apr 28 2016 Taylor Kimball <taylor@linuxhq.org> - 20160428gitcfd51de-1
 - Updated to commit cfd51de.
  
